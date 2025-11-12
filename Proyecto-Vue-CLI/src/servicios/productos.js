@@ -17,10 +17,10 @@ class ServicioProductos {
     }
 
     //POST
-    post = async (datos) => {
+    post = async (dato) => {
         try {
-            const { data: datoGuardado } = await axios.post(this.#url, producto);
-            return datoGuardado;
+            const response= await axios.post(this.#url, dato);
+            return response.data;
         } catch (error) {
             console.log('Error productos POST', error.message);
         }

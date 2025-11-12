@@ -33,21 +33,21 @@
                    </div>
 
 
-<!--                   campo email
+<!--                   campo email -->
                   <div class="form-group">
                     <label for="email">email</label>
-                    <input type="text" id="email" class="form-control mb-2" 
+                    <input type="email" id="email" class="form-control mb-2" 
                       v-model.trim="dato.email"
                       @input="datoDirty.email = true"  
                     />                       
                     <div  v-if="!dato.email && datoDirty.email" class="alert alert-danger">
                       Campo requerido
                     </div>                   
-                   </div>           -->
+                   </div>           
 
                   
                    <!-- boton de envio -->
-                   <button class="btn btn-success mt-1" :disabled="estadoBotonDeshabilitado()"> Enviar </button>
+                   <button class="btn btn-success mt-1" :disabled="estadoBotonDeshabilitado"> Enviar </button>
                    
                 </form>
 
@@ -100,16 +100,29 @@ export default {
       datoDirty: this.iniForm(),
     };
   },
-  computed: { 
-    estadoBotonDeshabilitado(){
-        return !this.errorNombre().ok || !this.errorEdad().ok;
-      },
+  computed: {
+  estadoBotonDeshabilitado() {
+    return !this.errorNombre().ok || !this.errorEdad().ok;
+  },
+},
+  watch: {
+  },
+  methods: { 
+    iniForm(){
+      return{
+          id: null,
+          nombre: null,
+          edad: null,
+          email: null,
+        }
+    },
+
     errorNombre(){
         let mensaje = '';
         let nombre = this.dato.nombre;
         if(!nombre) mensaje = 'CAMPO REQUERIDO';
-        else if(nombre.length <= 3) mensaje = 'Este campo debe poseer como minimo 3 caracteres';
-        else if(nombre.length > 10) mensaje = 'Este campo debe poseer como maximo 10 caracteres';
+        else if(nombre.length <= 5 ) mensaje = 'Este campo debe poseer como minimo 5 caracteres';
+        else if(nombre.length > 15 ) mensaje = 'Este campo debe poseer como maximo 15 caracteres';
         else if(nombre.includes(' ')) mensaje = 'El nombre no puede contener espacios intermedios';
         return{
           mensaje: mensaje,
@@ -131,18 +144,6 @@ export default {
         }
       },
 
-  },
-  watch: {
-  },
-  methods: { 
-    iniForm(){
-      return{
-          nombre: null,
-          edad: null,
-          email: null,
-        }
-    },
-
 
     /* -------- Metodos para consumir la API rest full ----------*/
 
@@ -155,7 +156,7 @@ export default {
     //POST
     async enviar(){
       const dato = {...this.dato} // clono el objeto producto para no mutar el original
-      console.log('dato a enviar:', dato);
+      console.log('dato a enviar:', this.dato);
 
       //agrego producto en el recurso remoto
       const datoGuardado = await this.servicioProductos.post(dato); // llamo al metodo post del servicio para guardar el producto

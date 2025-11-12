@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory} from "vue-router";
-import Api from "./components/Api.vue";
+import Api from './components/Api.vue';
 
-const routes =[
+const routes = [
+  { path: '/', component: Api },
+  { path: '/api', component: Api },
 
-    {path: '/', component: Api},  
-    {path: '/api', component: Api},
 
     {path: '/:pathmatch(.*)*', component: Api}, /* se puede hacer un componente de error */
 ]
